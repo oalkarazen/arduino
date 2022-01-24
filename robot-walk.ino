@@ -31,8 +31,8 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 // want these to be as small/large as possible without hitting the hard stop
 // for max range. You'll have to tweak them as necessary to match the servos you
 // have!
-#define SERVOMIN  75 // This is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  545 // This is the 'maximum' pulse length count (out of 4096)
+#define SERVOMIN  90 // This is the 'minimum' pulse length count (out of 4096)
+#define SERVOMAX  530 // This is the 'maximum' pulse length count (out of 4096)
 #define USMIN  600 // This is the rounded 'minimum' microsecond length based on the minimum pulse of 150
 #define USMAX  2400 // This is the rounded 'maximum' microsecond length based on the maximum pulse of 600
 #define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
@@ -54,21 +54,21 @@ const int iter = 17;
 const int array_forward[iter][4] =  
 {
 {330,330,330,234},
-{449,330,330,234},
-{449,378,330,234},
-{449,378,330,335},
+{400,330,330,234},
+{400,378,330,234},
+{400,378,330,335},
 {330,378,330,335},
 {330,378,330,239},
-{330,378,234,239},
-{330,330,234,239},
-{330,143,234,239},
-{262,143,234,239},
-{262,330,234,239},
-{262,330,406,239},
-{262,327,406,371},
-{262,330,406,371},
-{330,330,406,371},
-{330,330,322,371},
+{330,378,262,239},
+{330,330,262,239},
+{330,220,234,239},
+{262,220,262,239},
+{262,330,262,239},
+{262,330,360,239},
+{262,327,360,360},
+{262,330,360,360},
+{330,330,360,360},
+{330,330,322,360},
 {330,330,330,330}
 };
 
@@ -93,9 +93,19 @@ void setup() {
    * affects the calculations for the PWM update frequency. 
    * Failure to correctly set the int.osc value will cause unexpected PWM results
    */
-  pwm.setOscillatorFrequency(27000000);
+  pwm.setOscillatorFrequency(26000000);
   pwm.setPWMFreq(SERVO_FREQ);  // Analog servos run at ~50 Hz updates
-  
+  //pwm.setPWM(0, 0, servo_center);
+  pwm.writeMicroseconds(0, 1500);
+  delay(1000);
+  //pwm.setPWM(1, 0, servo_center);
+  pwm.writeMicroseconds(1, 1500);
+  delay(1000);
+  //pwm.setPWM(2, 0, servo_center);
+  pwm.writeMicroseconds(2, 1500);
+  delay(1000);
+  //pwm.setPWM(3, 0, servo_center);
+  pwm.writeMicroseconds(3, 1500);
   delay(1000);
  
 }
@@ -126,15 +136,17 @@ void loop() {
       } else if (array_forward[x][0] > s0_save) {
         
         for (s0 = s0_save; s0 <= array_forward[x][0]; s0++){
+          Serial.print("Setting s0 to: ");Serial.println(s0);
           pwm.setPWM(0, 0, s0);
-          delay(30);
+          delay(10);
         }
         s0_save = s0;
           
       } else {
         for (s0 = s0_save; s0 >= array_forward[x][0]; s0--){
+          Serial.print("Setting s0 to: ");Serial.println(s0);
           pwm.setPWM(0, 0, s0);
-          delay(30);
+          delay(10);
         }
         s0_save = s0;     
       }
@@ -146,15 +158,17 @@ void loop() {
       } else if (array_forward[x][1] > s1_save) {
         
         for (s1 = s1_save; s1 <= array_forward[x][1]; s1++){
+          Serial.print("Setting s1 to: ");Serial.println(s1);
           pwm.setPWM(1, 0, s1);
-          delay(30);
+          delay(10);
         }
         s1_save = s1;
           
       } else {
         for (s1 = s1_save; s1 >= array_forward[x][1]; s1--){
+          Serial.print("Setting s1 to: ");Serial.println(s1);
           pwm.setPWM(1, 0, s1);
-          delay(30);
+          delay(10);
         }
         s1_save = s1;     
       }      
@@ -166,15 +180,17 @@ void loop() {
       } else if (array_forward[x][2] > s2_save) {
         
         for (s2 = s2_save; s2 <= array_forward[x][2]; s2++){
+          Serial.print("Setting s2 to: ");Serial.println(s2);
           pwm.setPWM(2, 0, s2);
-          delay(30);
+          delay(10);
         }
         s2_save = s2;
           
       } else {
         for (s2 = s2_save; s2 >= array_forward[x][2]; s2--){
+          Serial.print("Setting s2 to: ");Serial.println(s2);
           pwm.setPWM(2, 0, s2);
-          delay(30);
+          delay(10);
         }
         s2_save = s2;     
       }     
@@ -186,15 +202,17 @@ void loop() {
       } else if (array_forward[x][3] > s3_save) {
         
         for (s3 = s3_save; s3 <= array_forward[x][3]; s3++){
+          Serial.print("Setting s3 to: ");Serial.println(s3);
           pwm.setPWM(3, 0, s3);
-          delay(30);
+          delay(10);
         }
         s3_save = s3;
           
       } else {
         for (s3 = s3_save; s3 >= array_forward[x][3]; s3--){
+          Serial.print("Setting s3 to: ");Serial.println(s3);
           pwm.setPWM(3, 0, s3);
-          delay(30);
+          delay(10);
         }
         s3_save = s3;     
       }           
